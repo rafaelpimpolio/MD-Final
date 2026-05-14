@@ -1,4 +1,5 @@
-    import express from "express";
+import express from "express";
+import db from "../config/db.js";
 
 import {
   getProducts,
@@ -8,6 +9,10 @@ import {
 } from "../controllers/productController.js";
 
 const router = express.Router();
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
 
 router.get("/", getProducts);
 
@@ -29,12 +34,14 @@ router.get("/history", (req, res) => {
       stock_out_history.quantity_out,
       stock_out_history.remarks,
       stock_out_history.created_at,
-      products.product_name
+      product.product_name
     FROM stock_out_history
     JOIN inventory
-      ON stock_out_history.inventory_id = inventory.inventory_id
-    JOIN products
-      ON inventory.product_id = products.product_id
+      ON stock_out_history.inventory_id =
+         inventory.inventory_id
+    JOIN product
+      ON inventory.product_id =
+         product.product_id
     ORDER BY stock_out_history.created_at DESC
   `;
 
@@ -45,7 +52,8 @@ router.get("/history", (req, res) => {
       console.log(err);
 
       return res.status(500).json({
-        success: false
+        success: false,
+        message: "Database error",
       });
 
     }

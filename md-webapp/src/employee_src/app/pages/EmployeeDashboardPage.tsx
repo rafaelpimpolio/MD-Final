@@ -2,6 +2,17 @@ import { Header } from "../components/Header";
 import { Clock, FileText, Package, CalendarDays, TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
 
 export function EmployeeDashboardPage() {
+
+  const currentTime =
+  new Date().toLocaleTimeString(
+    "en-US",
+    {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    }
+  );
   return (
     <div>
       <Header title="Dashboard" breadcrumbs={["Home"]} />
@@ -18,7 +29,9 @@ export function EmployeeDashboardPage() {
             </div>
             <div className="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3">
               <p className="text-sm text-white/80">Time In</p>
-              <p className="text-xl mt-1">06:05 AM</p>
+              <p className="text-xl mt-1">
+  {currentTime}
+</p>
             </div>
             <div className="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3">
               <p className="text-sm text-white/80">Hours Today</p>

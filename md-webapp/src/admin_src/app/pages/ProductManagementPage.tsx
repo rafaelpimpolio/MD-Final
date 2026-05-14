@@ -231,12 +231,19 @@ export function ProductManagementPage() {
             All Categories
           </option>
 
-          {lines.map((line) => (
+          {[
+            ...new Map(
+              products.map((product) => [
+                product.line_name,
+                product.line_name,
+              ])
+            ).values(),
+          ].map((lineName) => (
             <option
-              key={line.line_id}
-              value={line.line_name}
+              key={lineName}
+              value={lineName}
             >
-              {line.line_name}
+              {lineName}
             </option>
           ))}
         </select>

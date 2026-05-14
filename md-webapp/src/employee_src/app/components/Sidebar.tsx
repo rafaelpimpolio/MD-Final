@@ -87,27 +87,27 @@ export function Sidebar() {
 
   return (
 
-    <aside className="w-64 bg-[#D4C4B0] h-screen flex flex-col shadow-lg hidden md:flex">
+    <aside className="w-64 h-screen fixed left-0 top-0 bg-[#622F1E] text-white shadow-lg flex flex-col z-50 hidden md:flex">
 
       {/* LOGO */}
 
-      <div className="p-6 border-b border-[rgba(98,47,30,0.1)]">
+      <div className="p-6 border-b border-white/10">
 
         <div className="flex items-center gap-3">
 
-          <div className="w-10 h-10 rounded-xl bg-[#622F1E] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
 
-            <Coffee className="w-6 h-6 text-white" />
+            <Coffee className="w-6 h-6 text-[#622F1E]" />
 
           </div>
 
           <div>
 
-            <h1 className="text-xl text-[#622F1E] font-bold">
+            <h1 className="text-xl font-bold">
               AFIRM
             </h1>
 
-            <p className="text-xs text-[#6b6b6b]">
+            <p className="text-xs text-gray-300">
               Employee Portal
             </p>
 
@@ -128,10 +128,10 @@ export function Sidebar() {
             to={item.path}
             end={item.exact}
             className={({ isActive }: { isActive: boolean }) =>
-              `flex items-center gap-3 px-6 py-3 mx-2 rounded-xl transition-all ${
+              `flex items-center gap-3 px-6 py-3 mx-3 rounded-xl transition-all ${
                 isActive
-                  ? "bg-[#622F1E] text-white shadow-md"
-                  : "text-[#2d2d2d] hover:bg-[rgba(98,47,30,0.1)]"
+                  ? "bg-white text-[#622F1E] shadow-md"
+                  : "text-white hover:bg-[#4a2316]"
               }`
             }
           >
@@ -150,26 +150,26 @@ export function Sidebar() {
 
       {/* FOOTER */}
 
-      <div className="p-4 border-t border-[rgba(98,47,30,0.1)]">
+      <div className="p-4 border-t border-white/10">
 
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-white/50">
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-white/10">
 
-          <div className="w-10 h-10 rounded-full bg-[#622F1E] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
 
-            <span className="text-white text-sm">
-              MS
+            <span className="text-[#622F1E] text-sm font-bold">
+              EM
             </span>
 
           </div>
 
           <div className="flex-1">
 
-            <p className="text-sm text-[#2d2d2d]">
-              Maria Santos
+            <p className="text-sm">
+              Employee
             </p>
 
-            <p className="text-xs text-[#6b6b6b]">
-              Employee
+            <p className="text-xs text-gray-300">
+              Staff Account
             </p>
 
           </div>
@@ -177,9 +177,9 @@ export function Sidebar() {
         </div>
 
         <button
-  onClick={handleLogout}
-  className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors"
->
+          onClick={handleLogout}
+          className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#4a2316] text-white hover:bg-[#3a1b11] transition-colors"
+        >
 
           <LogOut className="w-4 h-4" />
 

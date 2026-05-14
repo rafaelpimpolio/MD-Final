@@ -79,7 +79,7 @@ export function Sidebar() {
 
   return (
 
-    <aside className="w-64 bg-[#622F1E] h-screen flex flex-col text-white shadow-lg">
+    <aside className="w-64 h-screen fixed left-0 top-0 bg-[#622F1E] text-white shadow-lg flex flex-col z-50">
 
       {/* LOGO */}
 
@@ -131,9 +131,9 @@ export function Sidebar() {
       <div className="p-4 border-t border-white/10">
 
         <button
-  onClick={handleLogout}
-  className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors"
->
+          onClick={handleLogout}
+          className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#4a2316] text-white hover:bg-[#3a1b11] transition-colors"
+        >
 
           <LogOut className="w-4 h-4" />
 

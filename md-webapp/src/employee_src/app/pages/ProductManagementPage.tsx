@@ -1,223 +1,292 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { Header } from "../components/Header";
 import { DataTable } from "../components/DataTable";
-import { StatusBadge } from "../components/StatusBadge";
-import { Plus, Search, Edit, Trash2, Eye } from "lucide-react";
 
-const productsData = [
-  {
-    id: "PRD-001",
-    name: "Classic Glazed Donut",
-    category: "Donuts",
-    price: "₱50.00",
-    status: "Active",
-    lastUpdated: "2026-03-15",
-  },
-  {
-    id: "PRD-002",
-    name: "Chocolate Donut",
-    category: "Donuts",
-    price: "₱60.00",
-    status: "Active",
-    lastUpdated: "2026-03-15",
-  },
-  {
-    id: "PRD-003",
-    name: "Bavarian Donut",
-    category: "Donuts",
-    price: "₱60.00",
-    status: "Active",
-    lastUpdated: "2026-03-10",
-  },
-  {
-    id: "PRD-004",
-    name: "Premium Coffee",
-    category: "Beverages",
-    price: "₱75.00",
-    status: "Active",
-    lastUpdated: "2026-03-18",
-  },
-  {
-    id: "PRD-005",
-    name: "Iced Coffee",
-    category: "Beverages",
-    price: "₱75.00",
-    status: "Active",
-    lastUpdated: "2026-03-18",
-  },
-  {
-    id: "PRD-006",
-    name: "Croissant",
-    category: "Pastries",
-    price: "₱85.00",
-    status: "Active",
-    lastUpdated: "2026-03-12",
-  },
-  {
-    id: "PRD-007",
-    name: "Cheese Danish",
-    category: "Pastries",
-    price: "₱90.00",
-    status: "Active",
-    lastUpdated: "2026-03-12",
-  },
-  {
-    id: "PRD-008",
-    name: "Hot Chocolate",
-    category: "Beverages",
-    price: "₱80.00",
-    status: "Inactive",
-    lastUpdated: "2026-02-28",
-  },
-];
+import {
+  Search,
+  Package,
+} from "lucide-react";
+
+type Product = {
+  product_id: number;
+  product_name: string;
+  price: string;
+  line_name: string;
+};
 
 const columns = [
-  { key: "id", label: "Product ID", width: "12%" },
-  { key: "name", label: "Product Name", width: "25%" },
-  { key: "category", label: "Category", width: "15%" },
-  { key: "price", label: "Unit Price", width: "12%" },
-  { key: "status", label: "Status", width: "12%" },
-  { key: "lastUpdated", label: "Last Updated", width: "14%" },
-  { key: "actions", label: "Actions", width: "10%" },
+  { key: "id", label: "Product ID", width: "15%" },
+  { key: "name", label: "Product Name", width: "35%" },
+  { key: "category", label: "Category", width: "25%" },
+  { key: "price", label: "Price", width: "25%" },
 ];
 
 export function ProductManagementPage() {
-  const renderCell = (key: string, value: any, row: any) => {
-    if (key === "status") {
-      return (
-        <StatusBadge
-          status={value}
-          type={value === "Active" ? "success" : "neutral"}
-        />
+
+  const [products, setProducts] =
+    useState<Product[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [searchTerm, setSearchTerm] =
+    useState("");
+
+  const [selectedCategory, setSelectedCategory] =
+    useState("");
+
+  /* =====================================================
+     FETCH PRODUCTS
+  ===================================================== */
+
+  useEffect(() => {
+
+    fetchProducts();
+
+  }, []);
+
+  const fetchProducts = async () => {
+
+    try {
+
+      const res = await axios.get(
+        "http://localhost:5000/api/products"
       );
+
+      setProducts(res.data);
+
+    } catch (err) {
+
+      console.log(err);
+
+    } finally {
+
+      setLoading(false);
+
     }
-    if (key === "category") {
-      const colors: Record<string, string> = {
-        Donuts: "bg-[#622F1E] text-white",
-        Beverages: "bg-blue-100 text-blue-700",
-        Pastries: "bg-orange-100 text-orange-700",
-      };
-      return (
-        <span className={`px-3 py-1 rounded-lg text-xs ${colors[value] || "bg-gray-100 text-gray-700"}`}>
-          {value}
-        </span>
-      );
-    }
-    if (key === "actions") {
-      return (
-        <div className="flex items-center gap-2">
-          <button className="p-1 hover:bg-[#FAF7F2] rounded-lg transition-colors">
-            <Eye className="w-4 h-4 text-[#6b6b6b]" />
-          </button>
-          <button className="p-1 hover:bg-[#FAF7F2] rounded-lg transition-colors">
-            <Edit className="w-4 h-4 text-[#6b6b6b]" />
-          </button>
-          <button className="p-1 hover:bg-red-50 rounded-lg transition-colors">
-            <Trash2 className="w-4 h-4 text-red-600" />
-          </button>
-        </div>
-      );
-    }
-    return value;
+
   };
 
+  /* =====================================================
+     FILTER PRODUCTS
+  ===================================================== */
+
+  const filteredProducts =
+    products.filter((product) => {
+
+      const matchesSearch =
+        product.product_name
+          .toLowerCase()
+          .includes(
+            searchTerm.toLowerCase()
+          );
+
+      const matchesCategory =
+        selectedCategory === "" ||
+        product.line_name ===
+          selectedCategory;
+
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+
+    });
+
+  /* =====================================================
+     UNIQUE CATEGORIES
+  ===================================================== */
+
+  const uniqueCategories = [
+    ...new Set(
+      products.map(
+        (product) => product.line_name
+      )
+    ),
+  ];
+
+  /* =====================================================
+     TABLE CELL RENDER
+  ===================================================== */
+
+  const renderCell = (
+    key: string,
+    value: any,
+    row: any
+  ) => {
+
+    if (key === "category") {
+
+      return (
+        <span className="px-3 py-1 rounded-lg text-xs bg-[#622F1E] text-white">
+          {row.line_name}
+        </span>
+      );
+
+    }
+
+    if (key === "price") {
+
+      return `₱${value}`;
+
+    }
+
+    return value;
+
+  };
+
+  /* =====================================================
+     TABLE DATA
+  ===================================================== */
+
+  const tableData =
+    filteredProducts.map((product) => ({
+      id: product.product_id,
+      name: product.product_name,
+      category: product.line_name,
+      price: product.price,
+      line_name: product.line_name,
+    }));
+
   return (
+
     <div>
+
       <Header
-        title="Product Management"
-        breadcrumbs={["Home", "Master Data", "Products"]}
+        title="Products"
+        breadcrumbs={[
+          "Home",
+          "Products",
+        ]}
       />
 
       <div className="p-8 space-y-6">
-        {/* Action Bar */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Search */}
+
+        {/* ACTION BAR */}
+
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+          <div className="flex flex-col md:flex-row gap-4">
+
+            {/* SEARCH */}
+
             <div className="relative">
+
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b6b6b]" />
+
               <input
                 type="text"
                 placeholder="Search products..."
-                className="pl-10 pr-4 py-2 rounded-xl border border-[rgba(98,47,30,0.1)] bg-white w-80 focus:outline-none focus:ring-2 focus:ring-[#622F1E] focus:border-transparent"
+                value={searchTerm}
+                onChange={(e) =>
+                  setSearchTerm(
+                    e.target.value
+                  )
+                }
+                className="pl-10 pr-4 py-2 rounded-xl border border-[rgba(98,47,30,0.1)] bg-white w-80 focus:outline-none"
               />
+
             </div>
 
-            {/* Category Filter */}
-            <select className="px-4 py-2 rounded-xl border border-[rgba(98,47,30,0.1)] bg-white focus:outline-none focus:ring-2 focus:ring-[#622F1E] focus:border-transparent">
-              <option>All Categories</option>
-              <option>Donuts</option>
-              <option>Beverages</option>
-              <option>Pastries</option>
+            {/* CATEGORY FILTER */}
+
+            <select
+              value={selectedCategory}
+              onChange={(e) =>
+                setSelectedCategory(
+                  e.target.value
+                )
+              }
+              className="px-4 py-2 rounded-xl border border-[rgba(98,47,30,0.1)] bg-white focus:outline-none"
+            >
+
+              <option value="">
+                All Categories
+              </option>
+
+              {uniqueCategories.map(
+                (category, index) => (
+
+                  <option
+                    key={index}
+                    value={category}
+                  >
+                    {category}
+                  </option>
+
+                )
+              )}
+
             </select>
 
-            {/* Status Filter */}
-            <select className="px-4 py-2 rounded-xl border border-[rgba(98,47,30,0.1)] bg-white focus:outline-none focus:ring-2 focus:ring-[#622F1E] focus:border-transparent">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
           </div>
 
-          {/* Add Product Button */}
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors shadow-md">
-            <Plus className="w-5 h-5" />
-            <span>Add Product</span>
-          </button>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* SUMMARY CARD */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-[rgba(98,47,30,0.1)]">
-            <p className="text-sm text-[#6b6b6b] mb-2">Total Products</p>
-            <p className="text-3xl text-[#2d2d2d]">48</p>
+
+            <div className="flex items-start justify-between mb-2">
+
+              <p className="text-sm text-[#6b6b6b]">
+                Total Products
+              </p>
+
+              <div className="w-10 h-10 rounded-xl bg-[#622F1E]/10 flex items-center justify-center">
+
+                <Package className="w-5 h-5 text-[#622F1E]" />
+
+              </div>
+
+            </div>
+
+            <p className="text-3xl text-[#2d2d2d]">
+              {filteredProducts.length}
+            </p>
+
           </div>
+
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-[rgba(98,47,30,0.1)]">
-            <p className="text-sm text-[#6b6b6b] mb-2">Active Products</p>
-            <p className="text-3xl text-green-600">45</p>
+
+            <p className="text-sm text-[#6b6b6b] mb-2">
+              Categories
+            </p>
+
+            <p className="text-3xl text-[#622F1E]">
+              {uniqueCategories.length}
+            </p>
+
           </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-[rgba(98,47,30,0.1)]">
-            <p className="text-sm text-[#6b6b6b] mb-2">Categories</p>
-            <p className="text-3xl text-[#622F1E]">5</p>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-[rgba(98,47,30,0.1)]">
-            <p className="text-sm text-[#6b6b6b] mb-2">Avg Price</p>
-            <p className="text-3xl text-[#2d2d2d]">₱68</p>
-          </div>
+
         </div>
 
-        {/* Products Table */}
-        <DataTable columns={columns} data={productsData} renderCell={renderCell} />
+        {/* TABLE */}
 
-        {/* Master Data Navigation */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[rgba(98,47,30,0.1)]">
-          <h3 className="text-lg text-[#2d2d2d] mb-4">Master Data Management</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a
-              href="/master-data/products"
-              className="p-4 rounded-xl bg-[#622F1E] text-white text-center hover:bg-[#4a2316] transition-colors"
-            >
-              Products
-            </a>
-            <a
-              href="/master-data/branches"
-              className="p-4 rounded-xl bg-[#D4C4B0] text-[#2d2d2d] text-center hover:bg-[#c4b4a0] transition-colors"
-            >
-              Branches
-            </a>
-            <a
-              href="/master-data/employees"
-              className="p-4 rounded-xl bg-[#D4C4B0] text-[#2d2d2d] text-center hover:bg-[#c4b4a0] transition-colors"
-            >
-              Employees
-            </a>
-            <a
-              href="/master-data/shifts"
-              className="p-4 rounded-xl bg-[#D4C4B0] text-[#2d2d2d] text-center hover:bg-[#c4b4a0] transition-colors"
-            >
-              Shifts
-            </a>
+        {loading ? (
+
+          <div className="bg-white rounded-2xl p-8 text-center">
+            Loading products...
           </div>
-        </div>
+
+        ) : (
+
+          <DataTable
+            columns={columns}
+            data={tableData}
+            renderCell={renderCell}
+          />
+
+        )}
+
       </div>
+
     </div>
+
   );
+
 }
