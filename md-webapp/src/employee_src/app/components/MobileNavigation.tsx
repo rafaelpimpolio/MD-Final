@@ -10,32 +10,32 @@ import {
 
 const navItems = [
   {
-    path: "/dashboard",
+    path: "/employee/dashboard",
     label: "Home",
     icon: LayoutDashboard,
     exact: true,
   },
 
   {
-    path: "/dashboard/attendance",
+    path: "/employee/dashboard/attendance",
     label: "Attendance",
     icon: Clock,
   },
 
   {
-    path: "/dashboard/reports",
+    path: "/employee/dashboard/reports",
     label: "Reports",
     icon: FileText,
   },
 
   {
-    path: "/dashboard/inventory",
+    path: "/employee/dashboard/inventory",
     label: "Inventory",
     icon: Package,
   },
 
   {
-    path: "/dashboard/profile",
+    path: "/employee/dashboard/profile",
     label: "Profile",
     icon: User,
   },

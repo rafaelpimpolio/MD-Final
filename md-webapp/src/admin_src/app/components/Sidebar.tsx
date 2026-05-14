@@ -9,60 +9,73 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { NavLink } from "react-router-dom";
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
 const menuItems = [
   {
-    path: "/dashboard",
+    path: "/admin/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
     exact: true,
   },
 
   {
-    path: "/dashboard/products",
+    path: "/admin/dashboard/products",
     label: "Products",
     icon: Package,
   },
 
   {
-    path: "/dashboard/inventory",
+    path: "/admin/dashboard/inventory",
     label: "Inventory",
     icon: Archive,
   },
 
   {
-    path: "/dashboard/stock-history",
+    path: "/admin/dashboard/stock-history",
     label: "Stock-In History",
     icon: ArrowDownCircle,
   },
 
   {
-    path: "/dashboard/stock-out",
+    path: "/admin/dashboard/stock-out",
     label: "Stock-Out",
     icon: ArrowUpCircle,
   },
 
   {
-    path: "/dashboard/stock-out-history",
+    path: "/admin/dashboard/stock-out-history",
     label: "Stock-Out History",
     icon: ArrowUpCircle,
   },
 
   {
-    path: "/dashboard/reports",
+    path: "/admin/dashboard/reports",
     label: "Reports",
     icon: FileText,
   },
 
   {
-    path: "/dashboard/attendance",
+    path: "/admin/dashboard/attendance",
     label: "Attendance",
     icon: ClipboardList,
   },
 ];
 
 export function Sidebar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+
+    localStorage.removeItem("user");
+
+    navigate("/");
+
+  };
 
   return (
 
@@ -117,7 +130,10 @@ export function Sidebar() {
 
       <div className="p-4 border-t border-white/10">
 
-        <button className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-[#622F1E] hover:bg-gray-100 transition">
+        <button
+  onClick={handleLogout}
+  className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors"
+>
 
           <LogOut className="w-4 h-4" />
 

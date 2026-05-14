@@ -4,7 +4,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import { DashboardLayout } from "./components/DashboardLayout";
+import { EmployeeDashboardLayout } from "./components/EmployeeDashboardLayout";
 
 import { InventoryMonitoringPage } from "./pages/InventoryMonitoringPage";
 
@@ -15,7 +15,7 @@ export default function App() {
     <Routes>
       <Route
         path="/dashboard"
-        element={<DashboardLayout />}
+        element={<EmployeeDashboardLayout />}
       >
         <Route
           index

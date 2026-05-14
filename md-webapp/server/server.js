@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import db from "./config/db.js";
-
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import inventoryRoutes from "./routes/inventoryRoutes.js";
@@ -15,6 +14,8 @@ import lineRoutes from "./routes/lineRoutes.js";
 dotenv.config();
 
 const app = express();
+
+app.use(express.json());
 
 /* =========================================================
    MIDDLEWARE
@@ -39,6 +40,9 @@ app.use("/api/stock-in", stockInRoutes);
 app.use("/api/stock-out", stockOutRoutes);
 
 app.use("/api/lines", lineRoutes);
+
+app.use( "/api/attendance",attendanceRoutes);
+  
 
 /* =========================================================
    TEST DATABASE

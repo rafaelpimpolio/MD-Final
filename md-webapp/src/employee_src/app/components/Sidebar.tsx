@@ -1,4 +1,7 @@
-import { NavLink } from "react-router-dom";
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
 import {
   LayoutDashboard,
@@ -15,62 +18,72 @@ import {
 
 const menuItems = [
   {
-    path: "/dashboard",
+    path: "/employee/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
     exact: true,
   },
 
   {
-    path: "/dashboard/attendance",
+    path: "/employee/dashboard/attendance",
     label: "Attendance",
     icon: Clock,
   },
 
   {
-    path: "/dashboard/inventory",
+    path: "/employee/dashboard/inventory",
     label: "Inventory",
     icon: Package,
   },
 
   {
-    path: "/dashboard/stock-history",
+    path: "/employee/dashboard/stock-history",
     label: "Stock-In History",
     icon: ArrowDownCircle,
   },
 
   {
-    path: "/dashboard/stock-out",
+    path: "/employee/dashboard/stock-out",
     label: "Stock-Out",
     icon: ArrowUpCircle,
   },
 
   {
-    path: "/dashboard/stock-out-history",
+    path: "/employee/dashboard/stock-out-history",
     label: "Stock-Out History",
     icon: FileText,
   },
 
   {
-    path: "/dashboard/reports",
+    path: "/employee/dashboard/reports",
     label: "Reports",
     icon: FileText,
   },
 
   {
-    path: "/dashboard/notifications",
+    path: "/employee/dashboard/notifications",
     label: "Notifications",
     icon: Bell,
   },
 
   {
-    path: "/dashboard/profile",
+    path: "/employee/dashboard/profile",
     label: "Profile",
     icon: User,
   },
 ];
 
 export function Sidebar() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+
+    localStorage.removeItem("user");
+
+    navigate("/");
+
+  };
 
   return (
 
@@ -163,7 +176,10 @@ export function Sidebar() {
 
         </div>
 
-        <button className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors">
+        <button
+  onClick={handleLogout}
+  className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#622F1E] text-white hover:bg-[#4a2316] transition-colors"
+>
 
           <LogOut className="w-4 h-4" />
 
