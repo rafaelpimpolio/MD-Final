@@ -11,6 +11,7 @@ import stockInRoutes from "./routes/stockInRoutes.js";
 import stockOutRoutes from "./routes/stockOutRoutes.js";
 import lineRoutes from "./routes/lineRoutes.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -42,6 +43,7 @@ app.use("/api/stock-out", stockOutRoutes);
 app.use("/api/lines", lineRoutes);
 
 app.use( "/api/attendance",attendanceRoutes);
+
   
 
 /* =========================================================

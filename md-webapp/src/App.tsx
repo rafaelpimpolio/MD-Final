@@ -12,7 +12,9 @@ import ProtectedAdminRoute from "./ProtectedAdminRoute";
 import ProtectedEmployeeRoute from "./ProtectedEmployeeRoute";
 
 /* ADMIN */
-import AttendancePage from "./admin_src/app/pages/AttendancePage";
+import {
+  AttendanceManagementPage,
+} from "./admin_src/app/pages/AttendanceManagementPage";
 
 import {
   DashboardLayout as AdminDashboardLayout,
@@ -127,9 +129,9 @@ export default function App() {
 
         {/* ATTENDANCE */}
         <Route
-          path="attendance"
-          element={<AttendancePage />}
-        />
+  path="attendance"
+  element={<AttendanceManagementPage />}
+/>
 
       </Route>
 
