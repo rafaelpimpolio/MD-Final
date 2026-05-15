@@ -16,7 +16,6 @@ type Line = {
 
 export function ProductManagementPage() {
   const [products, setProducts] = useState<Product[]>([]);
-
   const [lines, setLines] = useState<Line[]>([]);
 
   // SEARCH
@@ -32,9 +31,7 @@ export function ProductManagementPage() {
     useState<Product | null>(null);
 
   const [editName, setEditName] = useState("");
-
   const [editPrice, setEditPrice] = useState("");
-
   const [editLineId, setEditLineId] =
     useState("");
 
@@ -43,9 +40,7 @@ export function ProductManagementPage() {
     useState(false);
 
   const [newName, setNewName] = useState("");
-
   const [newPrice, setNewPrice] = useState("");
-
   const [newLineId, setNewLineId] =
     useState("");
 
@@ -77,7 +72,6 @@ export function ProductManagementPage() {
 
   useEffect(() => {
     fetchProducts();
-
     fetchLines();
   }, []);
 
@@ -176,9 +170,7 @@ export function ProductManagementPage() {
       setShowAddModal(false);
 
       setNewName("");
-
       setNewPrice("");
-
       setNewLineId("");
 
       fetchProducts();
@@ -193,7 +185,7 @@ export function ProductManagementPage() {
     <div className="p-8">
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl text-[#622F1E]">
+        <h1 className="text-3xl text-[#622F1E] font-bold">
           Product Management
         </h1>
 
@@ -214,7 +206,7 @@ export function ProductManagementPage() {
           onChange={(e) =>
             setSearchTerm(e.target.value)
           }
-          className="w-full md:w-[300px] border p-2 rounded-lg"
+          className="w-full md:w-[300px] border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
         />
       </div>
 
@@ -225,7 +217,7 @@ export function ProductManagementPage() {
           onChange={(e) =>
             setSelectedCategory(e.target.value)
           }
-          className="w-full md:w-[300px] border p-2 rounded-lg"
+          className="w-full md:w-[300px] border p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
         >
           <option value="">
             All Categories
@@ -321,15 +313,26 @@ export function ProductManagementPage() {
                 </td>
               </tr>
             ))}
+
+            {filteredProducts.length === 0 && (
+              <tr>
+                <td
+                  colSpan={5}
+                  className="text-center p-6 text-gray-500"
+                >
+                  No products found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
 
       {/* EDIT MODAL */}
       {editingProduct && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl w-[400px] shadow-xl">
-            <h2 className="text-2xl mb-4 text-[#622F1E]">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
+          <div className="bg-white p-6 rounded-xl w-[400px] shadow-2xl">
+            <h2 className="text-2xl mb-4 text-[#622F1E] font-semibold">
               Edit Product
             </h2>
 
@@ -340,7 +343,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setEditName(e.target.value)
               }
-              className="w-full border p-2 mb-3 rounded"
+              className="w-full border p-2 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             />
 
             <input
@@ -350,7 +353,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setEditPrice(e.target.value)
               }
-              className="w-full border p-2 mb-3 rounded"
+              className="w-full border p-2 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             />
 
             <select
@@ -358,7 +361,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setEditLineId(e.target.value)
               }
-              className="w-full border p-2 mb-5 rounded"
+              className="w-full border p-2 mb-5 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             >
               <option value="">
                 Select Category
@@ -397,9 +400,9 @@ export function ProductManagementPage() {
 
       {/* ADD PRODUCT MODAL */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl w-[400px] shadow-xl">
-            <h2 className="text-2xl mb-4 text-[#622F1E]">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
+          <div className="bg-white p-6 rounded-xl w-[400px] shadow-2xl">
+            <h2 className="text-2xl mb-4 text-[#622F1E] font-semibold">
               Add Product
             </h2>
 
@@ -410,7 +413,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setNewName(e.target.value)
               }
-              className="w-full border p-2 mb-3 rounded"
+              className="w-full border p-2 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             />
 
             <input
@@ -420,7 +423,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setNewPrice(e.target.value)
               }
-              className="w-full border p-2 mb-3 rounded"
+              className="w-full border p-2 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             />
 
             <select
@@ -428,7 +431,7 @@ export function ProductManagementPage() {
               onChange={(e) =>
                 setNewLineId(e.target.value)
               }
-              className="w-full border p-2 mb-5 rounded"
+              className="w-full border p-2 mb-5 rounded focus:outline-none focus:ring-2 focus:ring-[#622F1E]"
             >
               <option value="">
                 Select Category
